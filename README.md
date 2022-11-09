@@ -1,13 +1,19 @@
-# Sample Hardhat Project
+# Domcoin
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+ERC-20 Token Contract Manager
 
-Try running some of the following tasks:
+## Getting started
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
+Run local node with
+```
 npx hardhat node
-npx hardhat run scripts/deploy.js
+```
+Deploy to local network with
+```
+npx hardhat run --network localhost scripts/deploy.js
+```
+
+Run tests with
+```
+npx hardhat test
 ```
