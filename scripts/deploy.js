@@ -7,19 +7,15 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  const initialBalance = 1000;
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+  const Domcoin = await hre.ethers.getContractFactory("Domcoin");
+  const token = await Domcoin.deploy(initialBalance);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
+  await token.deployed();
 
   console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `Domcoin with initial balance ${initialBalance} deployed to ${token.address}`
   );
 }
 
