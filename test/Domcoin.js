@@ -70,4 +70,76 @@ describe("Domcoin", function () {
       expect(await token.totalSupply()).to.equal(950);
     });
   });
+
+  describe("Transfer", function () {
+    it("Moves tokens between accounts", async function () {
+      const { token, account, otherAccount } = await loadFixture(deployFixture);
+      await token.transfer(otherAccount.address, 250);
+
+      expect(await token.balanceOf(otherAccount.address)).to.equal(250);
+    });
+
+    it("Emits transfer event", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+
+      await expect(token.transfer(otherAccount.address, 250))
+        .to.emit(token, 'Transfer')
+        .withArgs(owner.address, otherAccount.address, 250);
+    });
+
+    it("Reverts when tokens amount is higher than balance", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+
+      await expect(token.transfer(otherAccount.address, 2000)).to.be.reverted;
+    });
+  });
+
+  describe("Allowance", async function () {
+    it("Sets the amount which account is allowed to spend", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+      await token.approve(otherAccount.address, 500);
+
+      expect(await token.allowance(owner.address, otherAccount.address)).to.equal(500);
+    });
+
+    it("Emits allowance event", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+
+      await expect(token.approve(otherAccount.address, 500))
+        .to.emit(token, 'Approval')
+        .withArgs(owner.address, otherAccount.address, 500);
+    });
+
+    it("Updates allowance value when money is transferred", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+      await token.approve(owner.address, 500);
+      await token.transferFrom(owner.address, otherAccount.address, 50);
+
+      expect(await token.allowance(owner.address, owner.address)).to.equal(450);
+    });
+
+    it("Reverts when amount is higher than allowance", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+      await token.approve(owner.address, 100);
+
+      await expect(token.transferFrom(owner.address, otherAccount.address, 200))
+        .to.be.revertedWith("ERC20: insufficient allowance");
+    });
+
+    it("Allows transfering from one account to another (transferFrom)", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+      await token.approve(owner.address, 100);
+
+      await token.transferFrom(owner.address, otherAccount.address, 50);
+      expect(await token.balanceOf(otherAccount.address)).to.equal(50);
+    });
+
+    it("Allows burning from specific account (burnFrom)", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+      await token.approve(owner.address, 100);
+
+      await token.burnFrom(owner.address, 50);
+      expect(await token.balanceOf(owner.address)).to.equal(950);
+    });
+  });
 });
