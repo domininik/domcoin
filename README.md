@@ -21,4 +21,16 @@ npx hardhat run --network localhost scripts/deploy.js
 Run tests with
 ```
 npx hardhat test
+
 ```
+
+Go to `client` directory
+and install client dependencies with
+```
+npm install
+```
+and start client with
+```
+npm start
+```
+and access client at http://localhost:3000/
