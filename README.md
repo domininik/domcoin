@@ -4,6 +4,11 @@ ERC-20 Token Contract Manager
 
 ## Getting started
 
+Install dependencies with
+```
+npm install
+```
+
 Run local node with
 ```
 npx hardhat node
