@@ -60,6 +60,14 @@ describe("Domcoin", function () {
 
       expect(await token.balanceOf(otherAccount.address)).to.equal(500);
     });
+
+    it("Emits transfer event", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+
+      await expect(token.mint(otherAccount.address, 500))
+        .to.emit(token, "Transfer")
+        .withArgs(ethers.constants.AddressZero, otherAccount.address, 500);
+    });
   });
 
   describe("Burn", function () {
@@ -68,6 +76,14 @@ describe("Domcoin", function () {
       await token.burn(50);
 
       expect(await token.totalSupply()).to.equal(950);
+    });
+
+    it("Emits transfer event", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployFixture);
+
+      await expect(token.burn(50))
+        .to.emit(token, "Transfer")
+        .withArgs(owner.address, ethers.constants.AddressZero, 50);
     });
   });
 
