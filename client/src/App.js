@@ -1,6 +1,7 @@
 import React from "react";
 import { ethers } from "ethers";
 import Domcoin from "./artifacts/contracts/Domcoin.sol/Domcoin.json";
+import { Container } from "semantic-ui-react";
 
 class App extends React.Component {
   state = {
@@ -39,9 +40,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <Container style={{marginTop: 10}}>
         <p>Name: {this.state.name }</p>
-      </div>
+      </Container>
     );
   }
 }
