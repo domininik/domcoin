@@ -113,7 +113,7 @@ class App extends React.Component {
                     />
                   </Grid.Column>
                 </Grid>
-                <Divider vertical>Or</Divider>
+                <Divider vertical>or</Divider>
               </Segment>
               <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
@@ -130,7 +130,7 @@ class App extends React.Component {
                     />
                   </Grid.Column>
                 </Grid>
-                <Divider vertical>.</Divider>
+                <Divider vertical>or</Divider>
               </Segment>
               <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
@@ -147,7 +147,7 @@ class App extends React.Component {
                     />
                   </Grid.Column>
                 </Grid>
-                <Divider vertical>.</Divider>
+                <Divider vertical>or</Divider>
               </Segment>
             </React.Fragment>
           ) : (

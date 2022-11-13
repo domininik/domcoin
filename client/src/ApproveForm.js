@@ -27,7 +27,7 @@ class ApproveForm extends React.Component {
       <Form onSubmit={this.approve} error={!!this.state.errorMessage}>
         <Message error header="Error" content={this.state.errorMessage} />
         <Form.Input
-          label='from'
+          label='address'
           placeholder='address'
           value={this.state.address}
           onChange={(e) => this.setState({ address: e.target.value })}

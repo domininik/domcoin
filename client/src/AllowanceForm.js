@@ -4,8 +4,8 @@ import { Form, Button, Message, Segment } from 'semantic-ui-react';
 class AllowanceForm extends React.Component {
   state = {
     errorMessage: '',
-    fromAddress: this.props.signerAddress,
-    toAddress: this.props.signerAddress,
+    owner: this.props.signerAddress,
+    spender: this.props.signerAddress,
     allowance: null
   }
 
@@ -14,8 +14,8 @@ class AllowanceForm extends React.Component {
 
     try {
       const allowance = await this.props.contract.allowance(
-        this.state.fromAddress,
-        this.state.toAddress
+        this.state.owner,
+        this.state.spender
       );
       this.setState({ allowance: allowance.toString() });
     } catch (error) {
@@ -28,16 +28,16 @@ class AllowanceForm extends React.Component {
       <Form onSubmit={this.getAllowance} error={!!this.state.errorMessage}>
         <Message error header="Error" content={this.state.errorMessage} />
         <Form.Input
-          label='from'
+          label='owner'
           placeholder='address'
-          value={this.state.fromAddress}
-          onChange={(e) => this.setState({ fromAddress: e.target.value })}
+          value={this.state.owner}
+          onChange={(e) => this.setState({ owner: e.target.value })}
         />
         <Form.Input
-          label='to'
+          label='spender'
           placeholder='address'
-          value={this.state.toAddress}
-          onChange={(e) => this.setState({ toAddress: e.target.value })}
+          value={this.state.spender}
+          onChange={(e) => this.setState({ spender: e.target.value })}
         />
         <Button content='Get allowance' />
         {
