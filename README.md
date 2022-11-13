@@ -1,6 +1,6 @@
 # Domcoin
 
-ERC-20 Token Contract Manager
+ERC-20 Token Central Bank
 
 ## Getting started
 
