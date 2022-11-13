@@ -5,6 +5,8 @@ import Domcoin from './artifacts/contracts/Domcoin.sol/Domcoin.json';
 import { Container, Segment, Grid, Form, Button, Divider, Message } from 'semantic-ui-react';
 import MintForm from './MintForm';
 import BurnForm from './BurnForm';
+import BalanceForm from './BalanceForm';
+import TransferForm from './TransferForm';
 
 class App extends React.Component {
   state = {
@@ -79,31 +81,46 @@ class App extends React.Component {
             </Message>
           ) : null
         }
-        <Segment placeholder>
-          <Grid columns={2} relaxed='very' stackable>
-            <Grid.Column>
-              {
-                this.state.contract ? (
-                  <MintForm
-                    contract={this.state.contract}
-                    signerAddress={this.state.signerAddress}
-                  />
-                ) : null
-              }
-            </Grid.Column>
-            <Grid.Column verticalAlign='middle'>
-              {
-                this.state.contract ? (
-                  <BurnForm
-                    contract={this.state.contract}
-                    signerAddress={this.state.signerAddress}
-                  />
-                ) : null
-              }
-            </Grid.Column>
-          </Grid>
-          <Divider vertical>Or</Divider>
-        </Segment>
+        {
+          this.state.contract ? (
+            <React.Fragment>
+              <Segment placeholder>
+                <Grid columns={2} relaxed='very' stackable>
+                  <Grid.Column>
+                    <MintForm
+                      contract={this.state.contract}
+                      signerAddress={this.state.signerAddress}
+                    />
+                  </Grid.Column>
+                  <Grid.Column verticalAlign='middle'>
+                    <BurnForm
+                      contract={this.state.contract}
+                      signerAddress={this.state.signerAddress}
+                    />
+                  </Grid.Column>
+                </Grid>
+                <Divider vertical>Or</Divider>
+              </Segment>
+              <Segment placeholder>
+                <Grid columns={2} relaxed='very' stackable>
+                  <Grid.Column>
+                    <BalanceForm
+                      contract={this.state.contract}
+                      signerAddress={this.state.signerAddress}
+                    />
+                  </Grid.Column>
+                  <Grid.Column verticalAlign='middle'>
+                    <TransferForm
+                      contract={this.state.contract}
+                      signerAddress={this.state.signerAddress}
+                    />
+                  </Grid.Column>
+                </Grid>
+                <Divider vertical>.</Divider>
+              </Segment>
+            </React.Fragment>
+          ) : null
+        }
       </Container>
     );
   }

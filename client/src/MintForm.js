@@ -1,6 +1,5 @@
 import React from 'react';
 import { ethers } from 'ethers';
-import Domcoin from './artifacts/contracts/Domcoin.sol/Domcoin.json';
 import { Form, Button, Message } from 'semantic-ui-react';
 
 class MintForm extends React.Component {
@@ -11,6 +10,8 @@ class MintForm extends React.Component {
   }
 
   mint = async () => {
+    this.setState({ errorMessage: '' });
+    
     try {
       await this.props.contract.mint(
         this.state.address,
@@ -37,7 +38,7 @@ class MintForm extends React.Component {
           value={this.state.value}
           onChange={(e) => this.setState({ value: e.target.value })}
         />
-        <Button content='Mint' primary />
+        <Button content='Mint' positive />
       </Form>
     )
   }
