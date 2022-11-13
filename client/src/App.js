@@ -72,7 +72,6 @@ class App extends React.Component {
   render() {
     return (
       <Container style={{marginTop: 10}}>
-        <p>Total Supply: {this.state.totalSupply }</p>
         {
           this.state.notification ? (
             <Message positive>
@@ -84,6 +83,7 @@ class App extends React.Component {
         {
           this.state.contract ? (
             <React.Fragment>
+              <p>Total Supply: {this.state.totalSupply }</p>
               <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
                   <Grid.Column>
@@ -119,7 +119,11 @@ class App extends React.Component {
                 <Divider vertical>.</Divider>
               </Segment>
             </React.Fragment>
-          ) : null
+          ) : (
+            <Message warning>
+              <Message.Header>You are not authorized to access this page</Message.Header>
+            </Message>
+          )
         }
       </Container>
     );
