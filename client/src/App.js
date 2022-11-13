@@ -1,8 +1,7 @@
-import './App.css';
 import React from 'react';
 import { ethers } from 'ethers';
 import Domcoin from './artifacts/contracts/Domcoin.sol/Domcoin.json';
-import { Container, Segment, Grid, Form, Button, Divider, Message } from 'semantic-ui-react';
+import { Container, Segment, Grid, Form, Button, Divider, Message, Menu } from 'semantic-ui-react';
 import MintForm from './MintForm';
 import BurnForm from './BurnForm';
 import BalanceForm from './BalanceForm';
@@ -12,6 +11,7 @@ import ApproveForm from './ApproveForm';
 
 class App extends React.Component {
   state = {
+    activeItem: 'mint',
     totalSupply: 0,
     contract: null,
     signerAddress: '',
@@ -83,6 +83,10 @@ class App extends React.Component {
     });
   }
 
+  handleItemClick = (event, { name }) => {
+    this.setState({ activeItem: name });
+  }
+
   render() {
     return (
       <Container style={{marginTop: 10}}>
@@ -97,58 +101,91 @@ class App extends React.Component {
         {
           this.state.contract ? (
             <React.Fragment>
-              <p>Total Supply: {this.state.totalSupply }</p>
-              <Segment placeholder>
-                <Grid columns={2} relaxed='very' stackable>
-                  <Grid.Column>
-                    <MintForm
-                      contract={this.state.contract}
-                      signerAddress={this.state.signerAddress}
-                    />
-                  </Grid.Column>
-                  <Grid.Column verticalAlign='middle'>
-                    <BurnForm
-                      contract={this.state.contract}
-                      signerAddress={this.state.signerAddress}
-                    />
-                  </Grid.Column>
-                </Grid>
-                <Divider vertical>or</Divider>
-              </Segment>
-              <Segment placeholder>
-                <Grid columns={2} relaxed='very' stackable>
-                  <Grid.Column>
-                    <BalanceForm
-                      contract={this.state.contract}
-                      signerAddress={this.state.signerAddress}
-                    />
-                  </Grid.Column>
-                  <Grid.Column verticalAlign='middle'>
-                    <TransferForm
-                      contract={this.state.contract}
-                      signerAddress={this.state.signerAddress}
-                    />
-                  </Grid.Column>
-                </Grid>
-                <Divider vertical>or</Divider>
-              </Segment>
-              <Segment placeholder>
-                <Grid columns={2} relaxed='very' stackable>
-                  <Grid.Column>
-                    <AllowanceForm
-                      contract={this.state.contract}
-                      signerAddress={this.state.signerAddress}
-                    />
-                  </Grid.Column>
-                  <Grid.Column verticalAlign='middle'>
-                    <ApproveForm
-                      contract={this.state.contract}
-                      signerAddress={this.state.signerAddress}
-                    />
-                  </Grid.Column>
-                </Grid>
-                <Divider vertical>or</Divider>
-              </Segment>
+              <Menu attached='top' tabular>
+                <Menu.Item
+                  name='mint'
+                  active={this.state.activeItem === 'mint'}
+                  onClick={this.handleItemClick}
+                />
+                <Menu.Item
+                  name='transfer'
+                  active={this.state.activeItem === 'transfer'}
+                  onClick={this.handleItemClick}
+                />
+                <Menu.Item
+                  name='allowance'
+                  active={this.state.activeItem === 'allowance'}
+                  onClick={this.handleItemClick}
+                />
+                <Menu.Menu position='right'>
+                  <Menu.Item>
+                    <p>Total Supply: {this.state.totalSupply }</p>
+                  </Menu.Item>
+                </Menu.Menu>
+              </Menu>
+              {
+                this.state.activeItem === 'mint' ? (
+                  <Segment attached='bottom'>
+                    <Grid columns={2} relaxed='very' stackable>
+                      <Grid.Column>
+                        <MintForm
+                          contract={this.state.contract}
+                          signerAddress={this.state.signerAddress}
+                        />
+                      </Grid.Column>
+                      <Grid.Column verticalAlign='middle'>
+                        <BurnForm
+                          contract={this.state.contract}
+                          signerAddress={this.state.signerAddress}
+                        />
+                      </Grid.Column>
+                    </Grid>
+                    <Divider vertical>or</Divider>
+                  </Segment>
+                ) : null
+              }
+              {
+                this.state.activeItem === 'transfer' ? (
+                  <Segment attached='bottom'>
+                    <Grid columns={2} relaxed='very' stackable>
+                      <Grid.Column>
+                        <BalanceForm
+                          contract={this.state.contract}
+                          signerAddress={this.state.signerAddress}
+                        />
+                      </Grid.Column>
+                      <Grid.Column verticalAlign='middle'>
+                        <TransferForm
+                          contract={this.state.contract}
+                          signerAddress={this.state.signerAddress}
+                        />
+                      </Grid.Column>
+                    </Grid>
+                    <Divider vertical>or</Divider>
+                  </Segment>
+                ) : null
+              }
+              {
+                this.state.activeItem === 'allowance' ? (
+                  <Segment attached='bottom'>
+                    <Grid columns={2} relaxed='very' stackable>
+                      <Grid.Column>
+                        <AllowanceForm
+                          contract={this.state.contract}
+                          signerAddress={this.state.signerAddress}
+                        />
+                      </Grid.Column>
+                      <Grid.Column verticalAlign='middle'>
+                        <ApproveForm
+                          contract={this.state.contract}
+                          signerAddress={this.state.signerAddress}
+                        />
+                      </Grid.Column>
+                    </Grid>
+                    <Divider vertical>or</Divider>
+                  </Segment>
+                ) : null
+              }
             </React.Fragment>
           ) : (
             <Message warning>
