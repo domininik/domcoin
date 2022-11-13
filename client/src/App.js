@@ -7,6 +7,8 @@ import MintForm from './MintForm';
 import BurnForm from './BurnForm';
 import BalanceForm from './BalanceForm';
 import TransferForm from './TransferForm';
+import AllowanceForm from './AllowanceForm';
+import ApproveForm from './ApproveForm';
 
 class App extends React.Component {
   state = {
@@ -67,6 +69,18 @@ class App extends React.Component {
         totalSupply: ethers.utils.formatUnits(totalSupply, 0)
       });
     });
+
+    contract.on('Approval', async (from, to, value, event) => {
+      const amount = ethers.utils.formatUnits(value, 0);
+      const notification = `${amount} coins approved from ${from} to ${to}`;
+      const block = await event.getBlock();
+      const timestamp = new Date(block.timestamp * 1000);
+
+      this.setState({
+        notification: notification,
+        timestamp: timestamp.toUTCString()
+      });
+    });
   }
 
   render() {
@@ -111,6 +125,23 @@ class App extends React.Component {
                   </Grid.Column>
                   <Grid.Column verticalAlign='middle'>
                     <TransferForm
+                      contract={this.state.contract}
+                      signerAddress={this.state.signerAddress}
+                    />
+                  </Grid.Column>
+                </Grid>
+                <Divider vertical>.</Divider>
+              </Segment>
+              <Segment placeholder>
+                <Grid columns={2} relaxed='very' stackable>
+                  <Grid.Column>
+                    <AllowanceForm
+                      contract={this.state.contract}
+                      signerAddress={this.state.signerAddress}
+                    />
+                  </Grid.Column>
+                  <Grid.Column verticalAlign='middle'>
+                    <ApproveForm
                       contract={this.state.contract}
                       signerAddress={this.state.signerAddress}
                     />
